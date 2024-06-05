@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Application.Interfaces
 {
-    internal class IUserService
+    public interface IClientService
     {
+        public addCartProduct() { };
     }
 }
