@@ -15,7 +15,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 #region Repositories
-builder.Services.AddScoped<IClientRepository, ClientRepositoryEf>();
+builder.Services.AddScoped<IBaseRepository, ClientRepositoryEf>();
 #endregion
 
 #region Services
@@ -23,8 +23,8 @@ builder.Services.AddScoped<IClientService, ClientService>();
 #endregion
 
 #region Database
-builder.Services.AddDbContext<ApplicationContext>(dbContextOptions => dbContextOptions.UseSqlite(
-    builder.Configuration["ConnectionString:PastasHoloresSlnDBConnectionString"]));
+builder.Services.AddDbContext<ApplicationContext>(options => options.UseSqlite(
+    builder.Configuration["ConnectionStrings:PastasHoloresSlnDBConnectionString"], b => b.MigrationsAssembly("Web")));
 #endregion
 
 var app = builder.Build();

@@ -27,7 +27,7 @@ namespace Web.Controllers
             return Ok(newObj);
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         public IActionResult Update([FromRoute] int id, [FromBody] ClientUpdateRequest clientUpdateRequest)
         {
             try
@@ -42,7 +42,7 @@ namespace Web.Controllers
             }
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public IActionResult Delete([FromRoute] int id)
         {
             try
@@ -57,7 +57,7 @@ namespace Web.Controllers
             }
         }
 
-        [HttpGet]
+        [HttpGet("[action]")]
         public ActionResult<List<Client>> GetAllFulData()
         {
             return _clientService.GetAllFullData();

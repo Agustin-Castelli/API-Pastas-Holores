@@ -8,8 +8,13 @@ namespace Domain.Entities
 {
     public class Client : User
     {
-        public string FirstName {  get; set; }
-        public string LastName { get; set; }
-        public string Adress { get; set; }
+        public Client()
+        {
+            Rol = (Domain.Enums.RolEnum.cliente);
+        }
+
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? Adress { get; set; }
     }
 }

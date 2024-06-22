@@ -8,17 +8,13 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
-    public class ClientRepositoryEf : BaseRepository<Client>, IBaseRepository
+    public class AdminRepositoryEf : BaseRepository<Admin>, IAdminRepository
     {
         private readonly ApplicationContext _context;
 
-        public ClientRepositoryEf(ApplicationContext context) : base(context)
+        public AdminRepositoryEf(ApplicationContext context) : base(context)
         {
             _context = context;
         }
-
-        // static int LastIdAssigned = 0;
-
-        
     }
 }

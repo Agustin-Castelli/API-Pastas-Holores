@@ -14,9 +14,9 @@ namespace Application.Services
 {
     public class ClientService : IClientService
     {
-        private readonly IClientRepository _clientRepository;
+        private readonly IBaseRepository _clientRepository;
 
-        public ClientService(IClientRepository clientRepository)
+        public ClientService(IBaseRepository clientRepository)
         {
             _clientRepository = clientRepository;
         }
@@ -74,7 +74,7 @@ namespace Application.Services
 
         public List<Client> GetAllFullData()
         {
-            throw new NotImplementedException();
+            return _clientRepository.GetAll();
         }
 
         public ClientDto GetById(int id) 
