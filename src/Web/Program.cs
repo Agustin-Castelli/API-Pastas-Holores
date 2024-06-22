@@ -1,5 +1,6 @@
 using Application.Interfaces;
 using Application.Services;
+using Domain.Entities;
 using Domain.Interfaces;
 using Infrastructure.Data;
 using Microsoft.Data.Sqlite;
@@ -15,11 +16,13 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 #region Repositories
-builder.Services.AddScoped<IBaseRepository, ClientRepositoryEf>();
+builder.Services.AddScoped<IBaseRepository<Client>, ClientRepositoryEf>();
+builder.Services.AddScoped<IBaseRepository<Admin>, AdminRepositoryEf>();
 #endregion
 
 #region Services
 builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IAdminService, AdminService>();
 #endregion
 
 #region Database

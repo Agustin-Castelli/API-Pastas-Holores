@@ -11,10 +11,10 @@ namespace Application.Models
     public class ClientDto
     {
         public int Id { get; set; }
-        public string Username { get; set; } = string.Empty;
-        public string FirstName { get; set; } = string.Empty;
-        public string LastName { get; set; } = string.Empty;
-        public string Adress { get; set; } = string.Empty;
+        public string? Username { get; set; } = string.Empty;
+        public string? FirstName { get; set; } = string.Empty;
+        public string? LastName { get; set; } = string.Empty;
+        public string? Adress { get; set; } = string.Empty;
 
         public static ClientDto Create(Client client)
         {
