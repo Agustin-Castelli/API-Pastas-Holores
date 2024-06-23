@@ -18,11 +18,13 @@ builder.Services.AddSwaggerGen();
 #region Repositories
 builder.Services.AddScoped<IBaseRepository<Client>, ClientRepositoryEf>();
 builder.Services.AddScoped<IBaseRepository<Admin>, AdminRepositoryEf>();
+builder.Services.AddScoped<IBaseRepository<Product>, ProductRepositoryEf>();
 #endregion
 
 #region Services
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IAdminService, AdminService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 #endregion
 
 #region Database
