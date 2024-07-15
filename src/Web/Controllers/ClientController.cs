@@ -12,9 +12,9 @@ namespace Web.Controllers
     [ApiController]
     public class ClientController : ControllerBase
     {
-        private readonly IClientService _clientService; 
+        private readonly IClientService _clientService;
 
-        public ClientController (IClientService clientService)
+        public ClientController(IClientService clientService)
         {
             _clientService = clientService;
         }
@@ -35,7 +35,7 @@ namespace Web.Controllers
                 _clientService.Update(id, clientUpdateRequest);
                 return NoContent();
             }
-            
+
             catch (NotFoundException ex)
             {
                 return NotFound(ex.Message);
@@ -78,6 +78,69 @@ namespace Web.Controllers
             }
 
             catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+
+
+
+        //              ↓ ↓ ↓ ↓  ENDPOINTS ESPECÍFICOS ↓ ↓ ↓ ↓ 
+
+
+
+
+        [HttpGet("[action]/{id}")]
+        public ActionResult<CartDto> GetCart([FromRoute] int clientId)
+        {
+            try
+            {
+                return _clientService.GetCart(clientId);
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpPut("[action]/{id}")]
+        public IActionResult AddCartProducts([FromRoute] int clientId, [FromQuery] string productName)
+        {
+            try
+            {
+                _clientService.AddCartProducts(clientId, productName);
+                return NoContent();
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpPut("[action]/{id}")]
+        public IActionResult DeleteCartProducts([FromRoute] int clientId, [FromQuery] string productName)
+        {
+            try
+            {
+                _clientService.DeleteCartProducts(clientId, productName);
+                return NoContent();
+            }
+            catch (NotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        public IActionResult CompletePurchase([FromRoute] int clientId, [FromQuery] string paymentMethod)
+        {
+            try
+            {
+                _clientService.CompletePurchase(clientId, paymentMethod);
+                return NoContent();
+            }
+            catch(NotFoundException ex)
             {
                 return NotFound(ex.Message);
             }

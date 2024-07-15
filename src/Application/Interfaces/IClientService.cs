@@ -18,5 +18,9 @@ namespace Application.Interfaces
         List<Client> GetAllFullData();
         ClientDto GetById(int id);
         void Update(int id, ClientUpdateRequest clientUpdateRequest);
+        public CartDto? GetCart(int clientId);
+        public void AddCartProducts(int clientId, string productName);
+        public void DeleteCartProducts(int clientId, string productName);
+        public void CompletePurchase(int clientId, string paymentMethod);
     }
 }

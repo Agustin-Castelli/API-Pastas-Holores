@@ -16,5 +16,10 @@ namespace Infrastructure.Data
         {
             _context = context;
         }
+
+        public Product? GetByName(string name)
+        {
+            return _context.Products.Find(new object[] { name });
+        }
     }
 }

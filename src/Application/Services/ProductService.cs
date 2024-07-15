@@ -30,7 +30,7 @@ namespace Application.Services
             newObj.Description = productCreateRequest.Description;
             newObj.Category = productCreateRequest.Category;
 
-            return newObj;
+            return _productRepository.Add(newObj);
         }
 
         public void Delete(int id)

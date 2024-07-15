@@ -13,6 +13,7 @@ namespace Infrastructure.Data
         public DbSet<Client> Clients { get; set; }
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Product> Products { get; set; }
+        public DbSet<Cart> Carts { get; set; }
 
 
         private readonly bool isTestingEnvironmet;
@@ -26,6 +27,14 @@ namespace Infrastructure.Data
         {
             SQLitePCL.Batteries_V2.Init();
             optionsBuilder.UseSqlite("Data Source=PastasHolores.db");
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Client>()
+                .HasOne(c => c.Cart)
+                .WithOne()
+                .HasForeignKey<Cart>(c => c.ClientId);
         }
     }
 }

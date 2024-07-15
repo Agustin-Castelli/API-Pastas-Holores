@@ -18,7 +18,8 @@ builder.Services.AddSwaggerGen();
 #region Repositories
 builder.Services.AddScoped<IBaseRepository<Client>, ClientRepositoryEf>();
 builder.Services.AddScoped<IBaseRepository<Admin>, AdminRepositoryEf>();
-builder.Services.AddScoped<IBaseRepository<Product>, ProductRepositoryEf>();
+builder.Services.AddScoped<IProductRepository, ProductRepositoryEf>();
+builder.Services.AddScoped<ICartRepository, CartRepository>();
 #endregion
 
 #region Services

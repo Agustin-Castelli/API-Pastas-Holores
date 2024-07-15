@@ -15,10 +15,14 @@ namespace Application.Services
     public class ClientService : IClientService
     {
         private readonly IBaseRepository<Client> _clientRepository;
+        private readonly ICartRepository _cartRepository;
+        private readonly IProductRepository _productRepository;
 
-        public ClientService(IBaseRepository<Client> clientRepository)
+        public ClientService(IBaseRepository<Client> clientRepository, ICartRepository cartRepository, IProductRepository productRepository)
         {
             _clientRepository = clientRepository;
+            _cartRepository = cartRepository;
+            _productRepository = productRepository;
         }
 
         public Client Create(ClientCreateRequest clientCreateRequest)
@@ -30,6 +34,8 @@ namespace Application.Services
             newObj.FirstName = clientCreateRequest.FirstName;
             newObj.LastName = clientCreateRequest.LastName;
             newObj.Adress = clientCreateRequest.Adress;
+
+            _cartRepository.CreateCartForClient(newObj.Id);
 
             return _clientRepository.Add(newObj);
         }
@@ -84,6 +90,98 @@ namespace Application.Services
             var dto = ClientDto.Create(obj);
 
             return dto;
+        }
+
+
+
+
+
+
+              // ↓ ↓ ↓ ↓  METODOS ESPECÍFICOS ↓ ↓ ↓ ↓ 
+
+
+
+
+
+
+        public CartDto? GetCart(int clientId)
+        {
+            if (_clientRepository.GetById(clientId).Id == clientId)
+            {
+                var cart = _cartRepository.GetCart(clientId);
+
+                var dto = CartDto.Create(cart);
+
+
+                return dto;
+            }
+
+            throw new NotFoundException(nameof(Client), clientId);
+        }
+
+        public void AddCartProducts(int clientId, string productName) 
+        {
+            if (_clientRepository.GetById(clientId).Id == clientId)    // Busco el cliente
+            {
+
+                var productFound = _productRepository.GetByName(productName);
+                var productInCart = _cartRepository.GetCart(clientId).Products.FirstOrDefault(productFound);
+
+                if (productFound != null)    // Busco el producto en la lista de productos
+                {
+                    if (productInCart != null)   // Busco el producto en el carrito
+                    {
+                        productInCart.Units += 1;
+                        productInCart.Price += productInCart.Price;
+                    }
+                    else
+                    {
+                        _cartRepository.GetCart(clientId).Products.Add(productFound);
+                    }
+
+                    _cartRepository.CalculateTotalProductPrice(clientId);
+                    _cartRepository.Update();
+                }
+                else
+                {
+                    throw new NotFoundException(nameof(Client), clientId);
+                }
+            }
+        }
+
+        public void DeleteCartProducts(int clientId, string productName) // Busco un cliente, si lo encuentra, busco el producto por el nombre, si lo encuentra, lo saco de la lista de productos del carrito.
+        {
+            if (_clientRepository.GetById(clientId).Id == clientId)
+            {
+
+                var productFound = _productRepository.GetByName(productName);
+
+                if (productFound != null ) 
+                {
+
+                    _cartRepository.GetCart(clientId).Products.Remove(productFound);
+                    _cartRepository.CalculateTotalProductPrice(clientId);
+                    _cartRepository.Update();
+                }
+            }
+            else
+            {
+                throw new NotFoundException(nameof(Client), clientId);
+            }
+        }
+
+        public void CompletePurchase(int clientId, string paymentMethod)
+        {
+            if (_clientRepository.GetById(clientId).Id == clientId)
+            {
+                _cartRepository.GetCart(clientId).PaymentMethod = paymentMethod;
+                _cartRepository.GetCart(clientId).Status = Domain.Enums.CartStatus.Completed;
+                _cartRepository.Update();
+            }
+            else
+            {
+                throw new NotFoundException(nameof(Client), clientId);
+            }
         }
     }
 }
