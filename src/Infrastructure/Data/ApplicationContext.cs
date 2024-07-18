@@ -33,7 +33,7 @@ namespace Infrastructure.Data
         {
             modelBuilder.Entity<Client>()
                 .HasOne(c => c.Cart)
-                .WithOne()
+                .WithOne(c => c.Client)
                 .HasForeignKey<Cart>(c => c.ClientId);
         }
     }

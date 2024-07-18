@@ -15,8 +15,13 @@ namespace Application.Models
         public CartStatus Status { get; set; }
         public string? PaymentMethod { get; set; }
 
-        public static CartDto Create(Cart cart)
+        public static CartDto? Create(Cart cart)
         {
+            if (cart == null)
+            {
+                return null; 
+            }
+
             var dto = new CartDto();
 
             dto.Products = cart.Products;

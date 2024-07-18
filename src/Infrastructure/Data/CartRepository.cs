@@ -22,7 +22,7 @@ namespace Infrastructure.Data
 
         public Cart? GetCart(int clientId)
         {
-            return _context.Set<Cart>().Find(new object[] { clientId });
+            return _context.Set<Cart>().FirstOrDefault(c => c.ClientId == clientId);
         }
 
         public void CreateCartForClient(int clientId)

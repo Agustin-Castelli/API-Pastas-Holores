@@ -27,6 +27,7 @@ namespace Web.Controllers
             return Ok(newObj);
         }
 
+
         [HttpPut("{id}")]
         public IActionResult Update([FromRoute] int id, [FromBody] ClientUpdateRequest clientUpdateRequest)
         {
@@ -91,12 +92,14 @@ namespace Web.Controllers
 
 
 
-        [HttpGet("[action]/{id}")]
+        [HttpGet("[action]/{clientId}")]
         public ActionResult<CartDto> GetCart([FromRoute] int clientId)
         {
             try
             {
-                return _clientService.GetCart(clientId);
+                var cart = _clientService.GetCart(clientId);
+                return cart;
+                
             }
             catch (NotFoundException ex)
             {
@@ -104,7 +107,7 @@ namespace Web.Controllers
             }
         }
 
-        [HttpPut("[action]/{id}")]
+        [HttpPut("[action]/{clientId}")]
         public IActionResult AddCartProducts([FromRoute] int clientId, [FromQuery] string productName)
         {
             try
@@ -118,7 +121,7 @@ namespace Web.Controllers
             }
         }
 
-        [HttpPut("[action]/{id}")]
+        [HttpPut("[action]/{clientId}")]
         public IActionResult DeleteCartProducts([FromRoute] int clientId, [FromQuery] string productName)
         {
             try
@@ -132,7 +135,7 @@ namespace Web.Controllers
             }
         }
 
-        [HttpPut]
+        [HttpPut("[action]/{clientId}")]
         public IActionResult CompletePurchase([FromRoute] int clientId, [FromQuery] string paymentMethod)
         {
             try

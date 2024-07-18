@@ -35,9 +35,11 @@ namespace Application.Services
             newObj.LastName = clientCreateRequest.LastName;
             newObj.Adress = clientCreateRequest.Adress;
 
+            var addedClient = _clientRepository.Add(newObj);
+
             _cartRepository.CreateCartForClient(newObj.Id);
 
-            return _clientRepository.Add(newObj);
+            return addedClient;
         }
 
         public void Update(int id, ClientUpdateRequest clientUpdateRequest) 
@@ -110,42 +112,47 @@ namespace Application.Services
             {
                 var cart = _cartRepository.GetCart(clientId);
 
-                var dto = CartDto.Create(cart);
+                if (cart != null)
+                {
+                    var dto = CartDto.Create(cart);
+                    return dto;
+                }
 
-
-                return dto;
+                else
+                {
+                    Console.WriteLine("Error aca.");
+                    return null;
+                }
             }
-
-            throw new NotFoundException(nameof(Client), clientId);
+            else
+            {
+                throw new NotFoundException(nameof(Client), clientId);
+            }
         }
 
         public void AddCartProducts(int clientId, string productName) 
         {
-            if (_clientRepository.GetById(clientId).Id == clientId)    // Busco el cliente
+            if (_clientRepository.GetById(clientId)?.Id == clientId)    // Busco el cliente
             {
 
                 var productFound = _productRepository.GetByName(productName);
-                var productInCart = _cartRepository.GetCart(clientId).Products.FirstOrDefault(productFound);
+                //  var productInCart = _cartRepository.GetCart(clientId)?.Products?.FirstOrDefault(p => p.Name == productName);  <---- funcion que utilizaba para traer el producto del carrito en caso de que ya se encuentre cargado allí. Por ahora no lo uso.
 
                 if (productFound != null)    // Busco el producto en la lista de productos
                 {
-                    if (productInCart != null)   // Busco el producto en el carrito
-                    {
-                        productInCart.Units += 1;
-                        productInCart.Price += productInCart.Price;
-                    }
-                    else
-                    {
-                        _cartRepository.GetCart(clientId).Products.Add(productFound);
-                    }
-
-                    _cartRepository.CalculateTotalProductPrice(clientId);
+                    
+                    _cartRepository.GetCart(clientId).Products.Add(productFound);
                     _cartRepository.Update();
+                    _cartRepository.CalculateTotalProductPrice(clientId);
                 }
                 else
                 {
-                    throw new NotFoundException(nameof(Client), clientId);
+                    throw new NotFoundException(nameof(Product), productName);
                 }
+            }
+            else
+            {
+                throw new NotFoundException(nameof(Client), clientId);
             }
         }
 

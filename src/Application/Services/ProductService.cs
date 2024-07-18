@@ -14,9 +14,9 @@ namespace Application.Services
 {
     public class ProductService : IProductService
     {
-        private readonly IBaseRepository<Product> _productRepository;
+        private readonly IProductRepository _productRepository;
 
-        public ProductService(IBaseRepository<Product> productRepository)
+        public ProductService(IProductRepository productRepository)
         {
             _productRepository = productRepository;
         }
