@@ -14,11 +14,11 @@ namespace Application.Services
 {
     public class ClientService : IClientService
     {
-        private readonly IBaseRepository<Client> _clientRepository;
+        private readonly IClientRepository _clientRepository;
         private readonly ICartRepository _cartRepository;
         private readonly IProductRepository _productRepository;
 
-        public ClientService(IBaseRepository<Client> clientRepository, ICartRepository cartRepository, IProductRepository productRepository)
+        public ClientService(IClientRepository clientRepository, ICartRepository cartRepository, IProductRepository productRepository)
         {
             _clientRepository = clientRepository;
             _cartRepository = cartRepository;
@@ -140,9 +140,8 @@ namespace Application.Services
 
                 if (productFound != null)    // Busco el producto en la lista de productos
                 {
-                    
-                    _cartRepository.GetCart(clientId).Products.Add(productFound);
-                    _cartRepository.Update();
+                    var getCart = _cartRepository.GetCart(clientId);
+                    getCart.Products.Add(productFound);
                     _cartRepository.CalculateTotalProductPrice(clientId);
                 }
                 else
@@ -168,7 +167,6 @@ namespace Application.Services
 
                     _cartRepository.GetCart(clientId).Products.Remove(productFound);
                     _cartRepository.CalculateTotalProductPrice(clientId);
-                    _cartRepository.Update();
                 }
             }
             else
@@ -181,8 +179,16 @@ namespace Application.Services
         {
             if (_clientRepository.GetById(clientId).Id == clientId)
             {
-                _cartRepository.GetCart(clientId).PaymentMethod = paymentMethod;
-                _cartRepository.GetCart(clientId).Status = Domain.Enums.CartStatus.Completed;
+                var currentCart = _cartRepository.GetCart(clientId);
+
+                currentCart.PaymentMethod = paymentMethod;
+                currentCart.Status = Domain.Enums.CartStatus.Completed;
+
+                // AQUÍ IRÍA EL CÓDIGO PARA PASAR LA INFO DEL CARRITO A UN OBJETO SALES ANTES DE BORRARLA, PARA LUEGO GENERAR UN HISTORIAL DE CARRITOS. QUEDA PENDIENTE...
+
+                currentCart.Products.Clear();
+                currentCart.Status = Domain.Enums.CartStatus.Pending;
+                currentCart.PaymentMethod = string.Empty;
                 _cartRepository.Update();
             }
             else

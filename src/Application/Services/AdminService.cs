@@ -14,8 +14,8 @@ namespace Application.Services
 {
     public class AdminService : IAdminService
     {
-        private readonly IBaseRepository<Admin> _adminRepository;    //  PREGUNTAR LUEGO SI A LA HORA DE IMPLEMENTAR METODOS ESPECÍFICOS PARA CADA CLASE DEBO HACER LA INYECCION DEL REPO PARTICULAR DE CADA CLASE.
-        public AdminService(IBaseRepository<Admin> adminRepository)
+        private readonly IAdminRepository _adminRepository;    //  PREGUNTAR LUEGO SI A LA HORA DE IMPLEMENTAR METODOS ESPECÍFICOS PARA CADA CLASE DEBO HACER LA INYECCION DEL REPO PARTICULAR DE CADA CLASE.
+        public AdminService(IAdminRepository adminRepository)
         {
             _adminRepository = adminRepository;
         }

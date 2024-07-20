@@ -9,6 +9,6 @@ namespace Domain.Interfaces
 {
     public interface IAdminRepository : IBaseRepository<Admin>
     {
-
+        public Admin? GetByUsername(string username);
     }
 }

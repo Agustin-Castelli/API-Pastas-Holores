@@ -15,6 +15,7 @@ namespace Domain.Entities
         public int Id { get; set; }
         public string? Name { get; set; }
         public float Price { get; set; }
+        public int Units { get; set; } = 1;
         public string? Description { get; set; }
         public string? Category { get; set; }
     }

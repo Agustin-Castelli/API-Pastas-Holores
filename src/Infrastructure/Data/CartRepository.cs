@@ -22,7 +22,7 @@ namespace Infrastructure.Data
 
         public Cart? GetCart(int clientId)
         {
-            return _context.Set<Cart>().FirstOrDefault(c => c.ClientId == clientId);
+            return _context.Set<Cart>().Include(x => x.Products).FirstOrDefault(c => c.ClientId == clientId);
         }
 
         public void CreateCartForClient(int clientId)
@@ -46,7 +46,7 @@ namespace Infrastructure.Data
 
         public void CalculateTotalProductPrice(int clientId)
         {
-            var clientCart = _context.Set<Cart>().Find(new object[] { clientId });
+            var clientCart = _context.Set<Cart>().Include(x => x.Products).FirstOrDefault(c => c.ClientId == clientId);
 
             if (clientCart != null)
             {

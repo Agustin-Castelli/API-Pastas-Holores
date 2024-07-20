@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Infrastructure.Data
 {
-    public class ClientRepositoryEf : BaseRepository<Client>, IBaseRepository
+    public class ClientRepositoryEf : BaseRepository<Client>, IClientRepository
     {
         private readonly ApplicationContext _context;
 
@@ -18,7 +18,10 @@ namespace Infrastructure.Data
         }
 
 
-
+        public Client? GetByUsername(string username)
+        {
+            return _context.Clients.SingleOrDefault(c => c.Username == username);
+        }
         
     }
 }

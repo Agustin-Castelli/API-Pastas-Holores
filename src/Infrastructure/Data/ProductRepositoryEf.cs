@@ -20,15 +20,8 @@ namespace Infrastructure.Data
         public Product? GetByName(string name)
         {
             var productFound = _context.Products.FirstOrDefault(p => p.Name == name);
-            
-            if (productFound != null)
-            {
-                return productFound;
-            }
-            else
-            {
-                return null;
-            }
+
+            return productFound;
         }
     }
 }

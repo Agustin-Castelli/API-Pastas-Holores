@@ -3,6 +3,7 @@ using Application.Models;
 using Application.Models.Requests;
 using Domain.Entities;
 using Domain.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,6 +11,7 @@ namespace Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Policy = "RequireClientRole")]
     public class ClientController : ControllerBase
     {
         private readonly IClientService _clientService;
@@ -20,6 +22,7 @@ namespace Web.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "RequireAdminRole")]
         public IActionResult Create([FromBody] ClientCreateRequest clientCreateRequest)
         {
             var newObj = _clientService.Create(clientCreateRequest);
@@ -29,6 +32,7 @@ namespace Web.Controllers
 
 
         [HttpPut("{id}")]
+        [Authorize(Policy = "RequireAdminRole")]
         public IActionResult Update([FromRoute] int id, [FromBody] ClientUpdateRequest clientUpdateRequest)
         {
             try
@@ -44,6 +48,7 @@ namespace Web.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "RequireAdminRole")]
         public IActionResult Delete([FromRoute] int id)
         {
             try
@@ -59,18 +64,21 @@ namespace Web.Controllers
         }
 
         [HttpGet("[action]")]
+        [Authorize(Policy = "RequireAdminRole")]
         public ActionResult<List<Client>> GetAllFulData()
         {
             return _clientService.GetAllFullData();
         }
 
         [HttpGet("[action]")]
+        [Authorize(Policy = "RequireAdminRole")]
         public ActionResult<List<ClientDto>> GetAll()
         {
             return _clientService.GetAll();
         }
 
         [HttpGet("{id}")]
+        [Authorize(Policy = "RequireAdminRole")]
         public ActionResult<ClientDto> GetById([FromRoute] int id)
         {
             try

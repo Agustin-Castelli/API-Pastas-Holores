@@ -16,5 +16,10 @@ namespace Infrastructure.Data
         {
             _context = context;
         }
+
+        public Admin? GetByUsername(string username)
+        {
+            return _context.Admins.SingleOrDefault(a => a.Username == username);
+        }
     }
 }

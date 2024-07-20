@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces
 {
-    public interface IBaseRepository : IBaseRepository<Client>
+    public interface IClientRepository : IBaseRepository<Client>
     {
-        
+        public Client? GetByUsername(string username);
     }
 }
