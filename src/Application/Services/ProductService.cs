@@ -78,9 +78,17 @@ namespace Application.Services
         {
             var obj = _productRepository.GetById(id);
 
-            var dto = ProductDto.Create(obj);
+            if (obj == null)
+            {
+                throw new NotFoundException(nameof(Product), id);
+            }
 
-            return dto;
+            else
+            {
+                var dto = ProductDto.Create(obj);
+
+                return dto;
+            }
         }
     }
 }

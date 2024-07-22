@@ -67,7 +67,7 @@ namespace Application.Services
 
                 if (userLogged == null)
                 {
-                    throw new NotAllowedException("User authentication failed");
+                    return null;
                 }
 
                 var securityPassword = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_options.SecretForKey));  //Acá armo el Secret de la Signature.
@@ -101,7 +101,7 @@ namespace Application.Services
 
                 if (userLogged == null)
                 {
-                    throw new NotAllowedException("User authentication failed");
+                    return null;
                 }
 
                 var securityPassword = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_options.SecretForKey));

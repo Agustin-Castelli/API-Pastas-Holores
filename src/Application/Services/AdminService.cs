@@ -72,13 +72,21 @@ namespace Application.Services
             return _adminRepository.GetAll();
         }
 
-        public AdminDto GetById(int id)
+        public AdminDto? GetById(int id)
         {
             var obj = _adminRepository.GetById(id);
 
-            var dto = AdminDto.Create(obj);
+            if (obj == null)
+            {
+                throw new NotFoundException(nameof(Admin), id);
+            }
 
-            return dto;
+            else
+            {
+                var dto = AdminDto.Create(obj);
+
+                return dto;
+            }
         }
     }
 }

@@ -89,9 +89,17 @@ namespace Application.Services
         {
             var obj = _clientRepository.GetById(id);
 
-            var dto = ClientDto.Create(obj);
+            if (obj == null)
+            {
+                throw new NotFoundException(nameof(Client), id);
+            }
 
-            return dto;
+            else
+            {
+                var dto = ClientDto.Create(obj);
+
+                return dto;
+            }
         }
 
 
@@ -108,7 +116,7 @@ namespace Application.Services
 
         public CartDto? GetCart(int clientId)
         {
-            if (_clientRepository.GetById(clientId).Id == clientId)
+            if (_clientRepository.GetById(clientId)?.Id == clientId)
             {
                 var cart = _cartRepository.GetCart(clientId);
 
@@ -187,6 +195,7 @@ namespace Application.Services
                 // AQUÍ IRÍA EL CÓDIGO PARA PASAR LA INFO DEL CARRITO A UN OBJETO SALES ANTES DE BORRARLA, PARA LUEGO GENERAR UN HISTORIAL DE CARRITOS. QUEDA PENDIENTE...
 
                 currentCart.Products.Clear();
+                currentCart.TotalPrice = 0;
                 currentCart.Status = Domain.Enums.CartStatus.Pending;
                 currentCart.PaymentMethod = string.Empty;
                 _cartRepository.Update();

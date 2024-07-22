@@ -1,10 +1,12 @@
 using Application.Interfaces;
 using Application.Services;
 using Domain.Entities;
+using Domain.Enums;
 using Domain.Interfaces;
 using Infrastructure.Data;
 using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text;
@@ -23,7 +25,7 @@ builder.Services.AddSwaggerGen(setupAction =>
     {
         Type = SecuritySchemeType.Http,
         Scheme = "Bearer",
-        Description = "Acá el token generado al loguearse."
+        Description = "Acá pegar el token generado al loguearse."
     });
 
     setupAction.AddSecurityRequirement(new OpenApiSecurityRequirement
@@ -43,8 +45,8 @@ builder.Services.AddSwaggerGen(setupAction =>
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("RequireAdminRole", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("RequireClientRole", policy => policy.RequireRole("Client"));
+    options.AddPolicy("RequireAdminRole", policy => policy.RequireRole(RolEnum.admin.ToString()));
+    options.AddPolicy("RequireClientRole", policy => policy.RequireRole(RolEnum.cliente.ToString(), RolEnum.admin.ToString()));
 });
 
 #region Repositories
