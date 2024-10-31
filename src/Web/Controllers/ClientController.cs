@@ -11,7 +11,7 @@ namespace Web.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [Authorize(Policy = "RequireClientRole")]
+    
     public class ClientController : ControllerBase
     {
         private readonly IClientService _clientService;
